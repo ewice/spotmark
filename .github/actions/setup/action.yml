@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+
+name: 'Setup Environment'
+description: 'Checks out code, sets up Node.js, caches and restores dependencies'
+
+outputs:
+  cache-hit:
+    description: 'Indicates if cache was hit'
+    value: ${{ steps.npm-cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
+
+    - uses: actions/cache@v4
+      id: npm-cache
+      with:
+        path: |
+          **/node_modules
+          ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
