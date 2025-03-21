@@ -8,7 +8,7 @@ const SPECIAL_CHARS_REGEX = /[-[\]{}()*+?.,\\^$|#]/g;
 const FLAG_OPTIONS: [keyof HighlightOptions, string][] = [
   ['matchAll', 'g'],
   ['ignorePunctuation', 'u'],
-  ['caseSensitive', 'i']
+  ['caseSensitive', 'i'],
 ] as const;
 
 /**
@@ -18,8 +18,7 @@ const FLAG_OPTIONS: [keyof HighlightOptions, string][] = [
  * @example
  * escapeCharacters('hello.world') // returns 'hello\.world'
  */
-export const escapeCharacters = (query: string): string => 
-  query?.replace(SPECIAL_CHARS_REGEX, '\\$&') ?? '';
+export const escapeCharacters = (query: string): string => query?.replace(SPECIAL_CHARS_REGEX, '\\$&') ?? '';
 
 /**
  * Replaces each character with a pattern that matches the character and any punctuation
@@ -28,8 +27,7 @@ export const escapeCharacters = (query: string): string =>
  * @example
  * replacePunctuationWithRegex('hello') // returns 'h[\p{P}]*e[\p{P}]*l[\p{P}]*l[\p{P}]*o[\p{P}]*'
  */
-export const replacePunctuationWithRegex = (query: string): string => 
-  query?.split('').join('[\\p{P}]*') ?? '';
+export const replacePunctuationWithRegex = (query: string): string => query?.split('').join('[\\p{P}]*') ?? '';
 
 /**
  * Replaces characters with patterns that match their diacritic variations
@@ -40,7 +38,7 @@ export const replacePunctuationWithRegex = (query: string): string =>
  */
 export const replaceDiacriticsWithRegex = (query: string): string => {
   if (!query) return '';
-  
+
   return DIACRITICS_MAP.reduce((result, diacritic) => {
     const regex = new RegExp(`([${diacritic}])|([${diacritic.toUpperCase()}])`, 'g');
     return result.replace(regex, (_, lowerCase) => `[${lowerCase ? diacritic : diacritic.toUpperCase()}]`);
@@ -54,8 +52,7 @@ export const replaceDiacriticsWithRegex = (query: string): string => {
  * @example
  * getRegexFlags({ matchAll: true, caseSensitive: false }) // returns 'gi'
  */
-export const getRegexFlags = (options: HighlightOptions): string => 
-  FLAG_OPTIONS
-    .filter(([key]) => options[key])
+export const getRegexFlags = (options: HighlightOptions): string =>
+  FLAG_OPTIONS.filter(([key]) => options[key])
     .map(([, flag]) => flag)
     .join('');

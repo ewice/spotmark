@@ -27,11 +27,8 @@ export const createHighlighter = (config?: Partial<HighlightOptions>) => {
       const queryRegex = processQuery(query, options);
       const flags = getRegexFlags(options);
       const regex = new RegExp(queryRegex, flags);
-      
-      return text.replace(
-        regex,
-        (match) => `<${options.tag} class="${options.className}">${match}</${options.tag}>`,
-      );
+
+      return text.replace(regex, (match) => `<${options.tag} class="${options.className}">${match}</${options.tag}>`);
     } catch (error) {
       console.error('Failed to perform text replacement:', error);
       return text;

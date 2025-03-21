@@ -41,11 +41,8 @@ export const processQuery = (query: string, options: HighlightOptions): string =
       escapeCharacters,
       options.ignorePunctuation && replacePunctuationWithRegex,
       options.diacritics && replaceDiacriticsWithRegex,
-      options.separateWordSearch && processWordSearch
-    ].reduce((result, processor) => 
-      processor ? processor(result) : result,
-      query
-    );
+      options.separateWordSearch && processWordSearch,
+    ].reduce((result, processor) => (processor ? processor(result) : result), query);
 
     return processed;
   } catch (error) {
