@@ -4,13 +4,6 @@ import { DIACRITICS_MAP } from '../constants';
 /** Regular expression pattern for matching special characters that need escaping in regex */
 const SPECIAL_CHARS_REGEX = /[-[\]{}()*+?.,\\^$|#]/g;
 
-/** Array of flag options and their corresponding characters */
-const FLAG_OPTIONS: [keyof HighlightOptions, string][] = [
-  ['matchAll', 'g'],
-  ['ignorePunctuation', 'u'],
-  ['caseSensitive', 'i'],
-] as const;
-
 /**
  * Escapes special regex characters in the query string to prevent regex syntax errors
  * @param query - The query string to escape
@@ -53,6 +46,4 @@ export const replaceDiacriticsWithRegex = (query: string): string => {
  * getRegexFlags({ matchAll: true, caseSensitive: false }) // returns 'gi'
  */
 export const getRegexFlags = (options: HighlightOptions): string =>
-  FLAG_OPTIONS.filter(([key]) => options[key])
-    .map(([, flag]) => flag)
-    .join('');
+  [options.matchAll && 'g', options.ignorePunctuation && 'u', !options.caseSensitive && 'i'].filter(Boolean).join('');

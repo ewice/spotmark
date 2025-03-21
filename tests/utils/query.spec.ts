@@ -11,13 +11,13 @@ describe('Query Utility Functions', () => {
 
     test('generates regex for default options', () => {
       const result = processQuery('Hello', DEFAULT_OPTIONS);
-      expect(result.source).toBe('H[eèéẻẽẹêềếểễệëěēę][lł][lł][oòóỏõọôồốổỗộơởỡớờợöøōœ]');
+      expect(result).toBe('H[eèéẻẽẹêềếểễệëěēę][lł][lł][oòóỏõọôồốổỗộơởỡớờợöøōœ]');
     });
 
     test('generates plain regex with no diacritics when diacritics option is disabled', () => {
       const options = createOptions({ diacritics: false });
       const result = processQuery('Hello', options);
-      expect(result.source).toBe('Hello');
+      expect(result).toBe('Hello');
     });
 
     test('handles separate words when separateWordSearch is enabled', () => {
@@ -26,7 +26,7 @@ describe('Query Utility Functions', () => {
         diacritics: false,
       });
       const result = processQuery('Hello World', options);
-      expect(result.source).toBe('Hello|World');
+      expect(result).toBe('Hello|World');
     });
 
     test('handles punctuation when ignorePunctuation is enabled', () => {
@@ -35,13 +35,13 @@ describe('Query Utility Functions', () => {
         ignorePunctuation: true,
       });
       const result = processQuery('Hello', options);
-      expect(result.source).toBe('H[\\p{P}]*e[\\p{P}]*l[\\p{P}]*l[\\p{P}]*o');
+      expect(result).toBe('H[\\p{P}]*e[\\p{P}]*l[\\p{P}]*l[\\p{P}]*o');
     });
 
     test('combines diacritics and punctuation handling when both options are enabled', () => {
       const options = createOptions({ ignorePunctuation: true });
       const result = processQuery('ae', options);
-      expect(result.source).toBe('[aàáảãạăằắẳẵặâầấẩẫậäåāąæ][\\p{P}]*[eèéẻẽẹêềếểễệëěēę]');
+      expect(result).toBe('[aàáảãạăằắẳẵặâầấẩẫậäåāąæ][\\p{P}]*[eèéẻẽẹêềếểễệëěēę]');
     });
   });
 });
