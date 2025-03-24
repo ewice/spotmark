@@ -15,7 +15,7 @@ const processCharacter = (character: string, options: HighlightOptions): string 
   if (isSpecialCharacter(character)) {
     return escapeCharacter(character);
   }
-  
+
   let result = options.diacritics ? replaceCharacterWithDiacritics(character) : character;
 
   if (options.ignorePunctuation) {
@@ -32,10 +32,10 @@ export const processQuery = (query: string, options: HighlightOptions): string =
 
   try {
     const characters = Array.from(query);
-    const processed = characters.map(character => processCharacter(character, options)).join('');
+    const processed = characters.map((character) => processCharacter(character, options)).join('');
 
     return options.separateWordSearch ? processWordSearch(processed) : processed;
   } catch (error) {
     throw new Error(`Failed to process query: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
-}; 
+};

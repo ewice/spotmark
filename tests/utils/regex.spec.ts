@@ -79,4 +79,4 @@ describe('Regex Utils', () => {
       expect(getRegexFlags(options)).toBe('gui');
     });
   });
-}); 
+});

@@ -19,4 +19,4 @@ export const replaceCharacterWithDiacritics = (character: string): string => {
 };
 
 export const getRegexFlags = (options: HighlightOptions): string =>
-  [options.matchAll && 'g', options.ignorePunctuation && 'u', !options.caseSensitive && 'i'].filter(Boolean).join(''); 
+  [options.matchAll && 'g', options.ignorePunctuation && 'u', !options.caseSensitive && 'i'].filter(Boolean).join('');

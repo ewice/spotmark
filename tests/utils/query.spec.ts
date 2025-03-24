@@ -48,4 +48,4 @@ describe('Query Utils', () => {
       expect(() => processQuery('', DEFAULT_OPTIONS)).toThrow('Invalid query');
     });
   });
-}); 
+});

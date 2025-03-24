@@ -28,5 +28,5 @@ export const createHighlighter = (config?: Partial<HighlightOptions>): Highlight
       console.error('Failed to perform text replacement:', error);
       return text;
     }
-  }
+  };
 };
