@@ -10,8 +10,7 @@ export const DEFAULT_OPTIONS: HighlightOptions = {
   tag: 'span',
 };
 
-/** Array of base characters and their diacritic variations */
-export const DIACRITICS_MAP = [
+export const DIACRITICS_MAP: string[] = [
   'aàáảãạăằắẳẵặâầấẩẫậäåāąæ',
   'cçćč',
   'dđď',
@@ -26,4 +25,24 @@ export const DIACRITICS_MAP = [
   'uùúủũụưừứửữựûüůū',
   'yýỳỷỹỵÿ',
   'zžżź',
-] as const;
+];
+
+export const SPECIAL_CHARS: string[] = [
+  '-',
+  '[',
+  ']',
+  '{',
+  '}',
+  '(',
+  ')',
+  '*',
+  '+',
+  '?',
+  '.',
+  ',',
+  '\\',
+  '^',
+  '$',
+  '|',
+  '#',
+];

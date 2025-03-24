@@ -1,2 +1,2 @@
 export { createHighlighter } from './lib/core';
-export type { HighlightOptions } from './lib/types';
+export type { HighlightOptions, Highlighter } from './lib/types';
