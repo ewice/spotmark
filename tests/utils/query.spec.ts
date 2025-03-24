@@ -2,7 +2,7 @@ import { processQuery } from '../../src/lib/utils/query';
 import { HighlightOptions } from '../../src';
 import { DEFAULT_OPTIONS } from '../../src/lib/constants';
 
-describe('Query Utility Functions', () => {
+describe('Query Utils', () => {
   describe('processQuery Function', () => {
     const createOptions = (overrides: Partial<HighlightOptions>) => ({
       ...DEFAULT_OPTIONS,
@@ -35,13 +35,17 @@ describe('Query Utility Functions', () => {
         ignorePunctuation: true,
       });
       const result = processQuery('Hello', options);
-      expect(result).toBe('H[\\p{P}]*e[\\p{P}]*l[\\p{P}]*l[\\p{P}]*o');
+      expect(result).toBe('H[\\p{P}]*e[\\p{P}]*l[\\p{P}]*l[\\p{P}]*o[\\p{P}]*');
     });
 
     test('combines diacritics and punctuation handling when both options are enabled', () => {
       const options = createOptions({ ignorePunctuation: true });
       const result = processQuery('ae', options);
-      expect(result).toBe('[aàáảãạăằắẳẵặâầấẩẫậäåāąæ][\\p{P}]*[eèéẻẽẹêềếểễệëěēę]');
+      expect(result).toBe('[aàáảãạăằắẳẵặâầấẩẫậäåāąæ][\\p{P}]*[eèéẻẽẹêềếểễệëěēę][\\p{P}]*');
+    });
+
+    test('throws error for empty query', () => {
+      expect(() => processQuery('', DEFAULT_OPTIONS)).toThrow('Invalid query');
     });
   });
 });

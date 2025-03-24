@@ -17,3 +17,8 @@ export interface HighlightOptions {
   /** HTML tag to wrap highlighted text (e.g., 'span', 'mark') */
   readonly tag: string;
 }
+
+/**
+ * The highlighter function
+ */
+export type Highlighter = (text: string, query: string) => string;

@@ -1,49 +1,22 @@
 import type { HighlightOptions } from '../types';
-import { DIACRITICS_MAP } from '../constants';
+import { DIACRITICS_MAP, SPECIAL_CHARS } from '../constants';
 
-/** Regular expression pattern for matching special characters that need escaping in regex */
-const SPECIAL_CHARS_REGEX = /[-[\]{}()*+?.,\\^$|#]/g;
+export const isSpecialCharacter = (character: string): boolean => SPECIAL_CHARS.includes(character);
 
-/**
- * Escapes special regex characters in the query string to prevent regex syntax errors
- * @param query - The query string to escape
- * @returns The escaped query string with special characters properly escaped
- * @example
- * escapeCharacters('hello.world') // returns 'hello\.world'
- */
-export const escapeCharacters = (query: string): string => query?.replace(SPECIAL_CHARS_REGEX, '\\$&') ?? '';
+export const escapeCharacter = (character: string): string => `\\${character}`;
 
-/**
- * Replaces each character with a pattern that matches the character and any punctuation
- * @param query - The query string to process
- * @returns The processed query string where each character is followed by optional punctuation
- * @example
- * replacePunctuationWithRegex('hello') // returns 'h[\p{P}]*e[\p{P}]*l[\p{P}]*l[\p{P}]*o[\p{P}]*'
- */
-export const replacePunctuationWithRegex = (query: string): string => query?.split('').join('[\\p{P}]*') ?? '';
+export const replaceCharacterWithDiacritics = (character: string): string => {
+  if (!character) return '';
 
-/**
- * Replaces characters with patterns that match their diacritic variations
- * @param query - The query string to process
- * @returns The processed query string where each character matches its diacritic variations
- * @example
- * replaceDiacriticsWithRegex('cafe') // returns '[cçćč][aàáảãạăằắẳẵặâầấẩẫậäåāąæ][f][eèéẻẽẹêềếểễệëěēę]'
- */
-export const replaceDiacriticsWithRegex = (query: string): string => {
-  if (!query) return '';
+  const lowerCase = character.toLowerCase();
+  const diacriticSet = DIACRITICS_MAP.find((set) => set.includes(lowerCase));
 
-  return DIACRITICS_MAP.reduce((result, diacritic) => {
-    const regex = new RegExp(`([${diacritic}])|([${diacritic.toUpperCase()}])`, 'g');
-    return result.replace(regex, (_, lowerCase) => `[${lowerCase ? diacritic : diacritic.toUpperCase()}]`);
-  }, query);
+  if (!diacriticSet) {
+    return character;
+  }
+
+  return character === lowerCase ? `[${diacriticSet}]` : `[${diacriticSet.toUpperCase()}]`;
 };
 
-/**
- * Generates regex flags based on the provided options
- * @param options - The highlighting options that determine which flags to include
- * @returns A string of regex flags based on the enabled options
- * @example
- * getRegexFlags({ matchAll: true, caseSensitive: false }) // returns 'gi'
- */
 export const getRegexFlags = (options: HighlightOptions): string =>
   [options.matchAll && 'g', options.ignorePunctuation && 'u', !options.caseSensitive && 'i'].filter(Boolean).join('');

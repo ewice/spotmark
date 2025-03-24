@@ -1,20 +1,15 @@
-import type { HighlightOptions } from './types';
+import type { HighlightOptions, Highlighter } from './types';
 import { DEFAULT_OPTIONS } from './constants';
 import { processQuery } from './utils/query';
 import { getRegexFlags } from './utils/regex';
 
-/**
- * Creates a text highlighter function with the specified options
- * @param config - Optional configuration to override default options
- * @returns A function that highlights text based on the given query
- */
-export const createHighlighter = (config?: Partial<HighlightOptions>) => {
+export const createHighlighter = (config?: Partial<HighlightOptions>): Highlighter => {
   const options: HighlightOptions = {
     ...DEFAULT_OPTIONS,
     ...config,
   };
 
-  return function highlight(text: string, query: string): string {
+  return (text: string, query: string): string => {
     if (!text || typeof text !== 'string') {
       return '';
     }
